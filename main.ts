@@ -455,5 +455,5 @@ explorer = sprites.create(img`
     . . . . . f f f f f f . . . . . 
     . . . . . f f . . f f . . . . . 
     `, SpriteKind.Player)
-controller.moveSprite(explorer)
 scene.cameraFollowSprite(explorer)
+controller.moveSprite(explorer)

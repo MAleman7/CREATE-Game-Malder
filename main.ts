@@ -71,7 +71,7 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . f f f . . . . 
         `],
     350,
-    true
+    false
     )
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -147,8 +147,13 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . f f f . . . f f . . . . . 
         `],
     350,
-    true
+    false
     )
+})
+scene.onOverlapTile(SpriteKind.Player, sprites.castle.tileDarkGrass3, function (sprite, location) {
+    if (true) {
+    	
+    }
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -223,7 +228,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . f f . . . f f f . . . 
         `],
     350,
-    true
+    false
     )
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -299,7 +304,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . f f f . . . . 
         `],
     350,
-    true
+    false
     )
 })
 let explorer: Sprite = null
@@ -457,3 +462,4 @@ explorer = sprites.create(img`
     `, SpriteKind.Player)
 scene.cameraFollowSprite(explorer)
 controller.moveSprite(explorer)
+tiles.loadMap(tiles.createMap(tilemap`level1`))

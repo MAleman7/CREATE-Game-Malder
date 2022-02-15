@@ -85,7 +85,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.oneUp, function (sprite, otherSp
 function SpeedBoost () {
     controller.moveSprite(explorer, 150, 150)
     speedBoots.destroy(effects.fire, 500)
-    info.startCountdown(30)
     pause(30000)
     controller.moveSprite(explorer, 100, 100)
 }
@@ -167,7 +166,7 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function invincibility () {
     explorer.setKind(SpriteKind.invincibleState)
-    info.startCountdown(10)
+    shield.destroy(effects.halo, 500)
     pause(10000)
     explorer.setKind(SpriteKind.Player)
 }
@@ -333,6 +332,7 @@ function gainLife () {
     info.changeLifeBy(1)
     _1Up.destroy(effects.hearts, 500)
 }
+let shield: Sprite = null
 let _1Up: Sprite = null
 let speedBoots: Sprite = null
 let explorer: Sprite = null
@@ -516,7 +516,7 @@ _1Up = sprites.create(img`
     ....................
     `, SpriteKind.oneUp)
 // Credit for Sprite Inspiration goes to https://clockworkraven.itch.io/rpg-icon-pack-160-fantasy-shields
-let mySprite = sprites.create(img`
+shield = sprites.create(img`
     . . . . . f f f f f f . . . . . 
     . . . . f f 6 6 4 4 f f . . . . 
     . . . f f 4 d d d d 4 f f . . . 
@@ -536,4 +536,4 @@ let mySprite = sprites.create(img`
     `, SpriteKind.invincibilityShield)
 speedBoots.setPosition(51, 41)
 _1Up.setPosition(122, 92)
-mySprite.setPosition(126, 35)
+shield.setPosition(126, 35)

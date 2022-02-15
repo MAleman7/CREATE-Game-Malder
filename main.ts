@@ -1,3 +1,8 @@
+namespace SpriteKind {
+    export const oneUp = SpriteKind.create()
+    export const invincibilityShield = SpriteKind.create()
+    export const invincibleState = SpriteKind.create()
+}
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     explorer,
@@ -74,36 +79,15 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     true
     )
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.oneUp, function (sprite, otherSprite) {
+    gainLife()
+})
 function SpeedBoost () {
-    // Credit for image inspiration to saphatthachat https://www.123rf.com/photo_59999783_pixel-art-boot.html
-    speedBoots = sprites.create(assets.image`Speed Boots`, SpriteKind.Player)
-    _1Up = sprites.create(img`
-        ....................
-        ....................
-        ....................
-        ....................
-        ....................
-        ......cccc.cccc.....
-        .....cc44ccc44cc....
-        ....cc4444c4444cc...
-        ....cc444444444cc...
-        ....cc444444444cc...
-        .....cc4444444cc....
-        ......cc44444cc.....
-        .......cc444cc......
-        ........cc4cc.......
-        .........ccc........
-        ..........c.........
-        ....................
-        ....................
-        ....................
-        ....................
-        `, SpriteKind.Player)
-    explorer.setVelocity(50, 50)
-    if (explorer.overlapsWith(speedBoots)) {
-    	
-    }
-    SpeedBoost()
+    controller.moveSprite(explorer, 150, 150)
+    speedBoots.destroy(effects.fire, 500)
+    info.startCountdown(30)
+    pause(30000)
+    controller.moveSprite(explorer, 100, 100)
 }
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -181,6 +165,12 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     true
     )
 })
+function invincibility () {
+    explorer.setKind(SpriteKind.invincibleState)
+    info.startCountdown(10)
+    pause(10000)
+    explorer.setKind(SpriteKind.Player)
+}
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     explorer,
@@ -256,6 +246,9 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     350,
     true
     )
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.invincibilityShield, function (sprite, otherSprite) {
+    invincibility()
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -333,6 +326,13 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     true
     )
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    SpeedBoost()
+})
+function gainLife () {
+    info.changeLifeBy(1)
+    _1Up.destroy(effects.hearts, 500)
+}
 let _1Up: Sprite = null
 let speedBoots: Sprite = null
 let explorer: Sprite = null
@@ -470,6 +470,7 @@ scene.setBackgroundImage(img`
     77777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
     `)
 tiles.setTilemap(tilemap`level1`)
+info.setLife(3)
 explorer = sprites.create(img`
     . . . . . . f f f f . . . . . . 
     . . . . f f f 2 2 f f f . . . . 
@@ -489,4 +490,50 @@ explorer = sprites.create(img`
     . . . . . f f . . f f . . . . . 
     `, SpriteKind.Player)
 scene.cameraFollowSprite(explorer)
-controller.moveSprite(explorer)
+controller.moveSprite(explorer, 100, 100)
+// Credit for image inspiration to saphatthachat https://www.123rf.com/photo_59999783_pixel-art-boot.html
+speedBoots = sprites.create(assets.image`Speed Boots`, SpriteKind.Food)
+_1Up = sprites.create(img`
+    ....................
+    ....................
+    ....................
+    ....................
+    ....................
+    ......cccc.cccc.....
+    .....cc44ccc44cc....
+    ....cc4444c4444cc...
+    ....cc444444444cc...
+    ....cc444444444cc...
+    .....cc4444444cc....
+    ......cc44444cc.....
+    .......cc444cc......
+    ........cc4cc.......
+    .........ccc........
+    ..........c.........
+    ....................
+    ....................
+    ....................
+    ....................
+    `, SpriteKind.oneUp)
+// Credit for Sprite Inspiration goes to https://clockworkraven.itch.io/rpg-icon-pack-160-fantasy-shields
+let mySprite = sprites.create(img`
+    . . . . . f f f f f f . . . . . 
+    . . . . f f 6 6 4 4 f f . . . . 
+    . . . f f 4 d d d d 4 f f . . . 
+    . . f f 6 d d d d d d 6 f f . . 
+    . f f 4 5 d d d d d d 5 6 f f . 
+    f f 4 d d 5 d d d d 5 d d 4 f f 
+    f 4 d d d d 5 4 4 5 d d d d 4 f 
+    f 6 d d d d 4 5 5 4 d d d d 6 f 
+    f 6 d d d d 4 5 5 4 d d d d 6 f 
+    f 4 d d d d 5 4 4 5 d d d d 4 f 
+    f f 4 d d 5 d d d d 5 d d 4 f f 
+    . f f 6 5 d d d d d d 5 6 f f . 
+    . . f f 4 d d d d d d 6 f f . . 
+    . . . f f 6 d d d d 4 f f . . . 
+    . . . . f f 4 4 4 6 f f . . . . 
+    . . . . . f f f f f f . . . . . 
+    `, SpriteKind.invincibilityShield)
+speedBoots.setPosition(51, 41)
+_1Up.setPosition(122, 92)
+mySprite.setPosition(126, 35)

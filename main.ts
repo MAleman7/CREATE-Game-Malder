@@ -215,6 +215,9 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.stairNorth, function (spr
         roomCompletion[0] = true
     }
 })
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.doorOpenSouth, function (sprite, location) {
+	
+})
 scene.onOverlapTile(SpriteKind.Player, tiles.util.door0, function (sprite, location) {
     if (roomCompletion[0] == false) {
         trophy1count = 0

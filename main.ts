@@ -3,6 +3,7 @@ namespace SpriteKind {
     export const invincibilityShield = SpriteKind.create()
     export const invincibleState = SpriteKind.create()
     export const trophy1 = SpriteKind.create()
+    export const finalTrophy = SpriteKind.create()
 }
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -454,11 +455,7 @@ function SpeedBoost () {
     speedBoots.destroy(effects.fire, 500)
     pause(20000)
 }
-scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.doorOpenEast, function (sprite, location) {
-    tiles.loadMap(tiles.createMap(tilemap`level34`))
-    tiles.placeOnTile(explorer, tiles.getTileLocation(7, 7))
-    pause(1000)
-    explorer.sayText("uh-oh", 500, false)
+sprites.onOverlap(SpriteKind.Player, SpriteKind.finalTrophy, function (sprite, otherSprite) {
     finalBoss = sprites.create(img`
         ........................
         ........................
@@ -485,28 +482,36 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.doorOpenEast, function (s
         ........................
         ........................
         `, SpriteKind.Player)
-    finalBoss.follow(explorer)
-    for (let index = 0; index < 4; index++) {
-        damage = sprites.createProjectileFromSprite(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . c c c . . . . . . 
-            . . . . . . a b a a . . . . . . 
-            . . . . . c b a f c a c . . . . 
-            . . . . c b b b f f a c c . . . 
-            . . . . b b f a b b a a c . . . 
-            . . . . c b f f b a f c a . . . 
-            . . . . . c a a c b b a . . . . 
-            . . . . . . c c c c . . . . . . 
-            . . . . . . . c . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, finalBoss, 50, 50)
-        pause(1000)
+    otherSprite.destroy()
+    while (bossFight == true) {
+        bossProjectiles1(explorer.x, explorer.y)
     }
+})
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.doorOpenEast, function (sprite, location) {
+    tiles.loadConnectedMap(ConnectionKind.Door2)
+    tiles.loadMap(tiles.createMap(tilemap`level34`))
+    tiles.placeOnTile(explorer, tiles.getTileLocation(7, 7))
+    bossFight = true
+    explorer.sayText("uh-oh", 500, false)
+    lastTrophy = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . 6 6 6 6 . . . . . . 
+        . . . . 6 6 6 5 5 6 6 6 . . . . 
+        . . . 7 7 7 7 6 6 6 6 6 6 . . . 
+        . . 6 7 7 7 7 8 8 8 1 1 6 6 . . 
+        . . 7 7 7 7 7 8 8 8 1 1 5 6 . . 
+        . 6 7 7 7 7 8 8 8 8 8 5 5 6 6 . 
+        . 6 7 7 7 8 8 8 6 6 6 6 5 6 6 . 
+        . 6 6 7 7 8 8 6 6 6 6 6 6 6 6 . 
+        . 6 8 7 7 8 8 6 6 6 6 6 6 6 6 . 
+        . . 6 8 7 7 8 6 6 6 6 6 8 6 . . 
+        . . 6 8 8 7 8 8 6 6 6 8 6 6 . . 
+        . . . 6 8 8 8 8 8 8 8 8 6 . . . 
+        . . . . 6 6 8 8 8 8 6 6 . . . . 
+        . . . . . . 6 6 6 6 . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.finalTrophy)
+    tiles.placeOnRandomTile(lastTrophy, sprites.dungeon.floorDark1)
 })
 function invincibility () {
     explorer.setKind(SpriteKind.invincibleState)
@@ -850,6 +855,29 @@ scene.onOverlapTile(SpriteKind.Player, sprites.castle.tilePath8, function (sprit
         game.showLongText("You Have Already completed this room", DialogLayout.Bottom)
     }
 })
+function bossProjectiles1 (playerX: number, playerY: number) {
+    pause(1000)
+    finalBoss.setPosition(playerX, playerY)
+    pause(100)
+    damage = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . c c c . . . . . . 
+        . . . . . . a b a a . . . . . . 
+        . . . . . c b a f c a c . . . . 
+        . . . . c b b b f f a c c . . . 
+        . . . . b b f a b b a a c . . . 
+        . . . . c b f f b a f c a . . . 
+        . . . . . c a a c b b a . . . . 
+        . . . . . . c c c c . . . . . . 
+        . . . . . . . c . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, finalBoss, randint(-50, 50), randint(-50, 50))
+}
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     explorer,
@@ -943,15 +971,17 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     pause(200)
     sprite.setKind(SpriteKind.Player)
 })
+let damage: Sprite = null
 let snake: Sprite = null
 let trophy: Sprite = null
 let _1Up: Sprite = null
 let shield: Sprite = null
-let damage: Sprite = null
+let lastTrophy: Sprite = null
 let finalBoss: Sprite = null
 let speedBoots: Sprite = null
 let boss1: Sprite = null
 let trophy1count = 0
+let bossFight = false
 let roomCompletion: boolean[] = []
 let explorer: Sprite = null
 let tilemap2: tiles.WorldMap = null
@@ -1091,6 +1121,8 @@ scene.setBackgroundImage(img`
 let tilemap1 = tiles.createMap(tilemap`level1`)
 tiles.connectMapById(tilemap1, tilemap2, ConnectionKind.Door1)
 tilemap2 = tiles.createMap(tilemap`level29`)
+let tilemap3 = tiles.createMap(tilemap`level34`)
+tiles.connectMapById(tilemap1, tilemap3, ConnectionKind.Door2)
 tiles.loadMap(tilemap1)
 explorer = sprites.create(img`
     . . . . . . f f f f . . . . . . 
@@ -1209,9 +1241,10 @@ story.startCutscene(function () {
 })
 controller.moveSprite(explorer, 200, 200)
 roomCompletion = [
-true,
-true,
-true,
+false,
+false,
+false,
 false
 ]
 info.setLife(3)
+bossFight = false

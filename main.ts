@@ -456,6 +456,9 @@ function SpeedBoost () {
 }
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.doorOpenEast, function (sprite, location) {
     tiles.loadMap(tiles.createMap(tilemap`level34`))
+    tiles.placeOnTile(explorer, tiles.getTileLocation(7, 7))
+    pause(1000)
+    explorer.sayText("uh-oh", 500, false)
     finalBoss = sprites.create(img`
         ........................
         ........................
@@ -483,7 +486,27 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.doorOpenEast, function (s
         ........................
         `, SpriteKind.Player)
     finalBoss.follow(explorer)
-    tiles.placeOnTile(explorer, tiles.getTileLocation(7, 7))
+    for (let index = 0; index < 4; index++) {
+        damage = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . c c c . . . . . . 
+            . . . . . . a b a a . . . . . . 
+            . . . . . c b a f c a c . . . . 
+            . . . . c b b b f f a c c . . . 
+            . . . . b b f a b b a a c . . . 
+            . . . . c b f f b a f c a . . . 
+            . . . . . c a a c b b a . . . . 
+            . . . . . . c c c c . . . . . . 
+            . . . . . . . c . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, finalBoss, 50, 50)
+        pause(1000)
+    }
 })
 function invincibility () {
     explorer.setKind(SpriteKind.invincibleState)
@@ -924,6 +947,7 @@ let snake: Sprite = null
 let trophy: Sprite = null
 let _1Up: Sprite = null
 let shield: Sprite = null
+let damage: Sprite = null
 let finalBoss: Sprite = null
 let speedBoots: Sprite = null
 let boss1: Sprite = null
@@ -1183,7 +1207,7 @@ story.startCutscene(function () {
     )
     story.spriteMoveToLocation(explorer, 60, 40, 60)
 })
-controller.moveSprite(explorer, 100, 100)
+controller.moveSprite(explorer, 200, 200)
 roomCompletion = [
 true,
 true,

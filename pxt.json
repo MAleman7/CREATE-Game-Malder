@@ -10,18 +10,17 @@
         "arcade-story": "github:microsoft/arcade-storytelling#v1.0.3",
         "arcade-background-scroll": "github:microsoft/arcade-background-scroll#926e12eefffd09d453c7cde73f8d6ebd0e666d9d",
         "Sprite Grid": "github:microsoft/arcade-grid#v1.3.0",
-        "controller": "*",
-        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1",
-        "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.1.0"
+        "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.1.0",
+        "Timers": "github:microsoft/arcade-timers#v1.1.0",
+        "arcade-text": "github:microsoft/arcade-text#v1.3.0",
+        "animation": "*"
     },
     "files": [
         "README.md",
         "main.blocks",
         "main.ts",
         "tilemap.g.jres",
-        "tilemap.g.ts",
-        "images.g.jres",
-        "images.g.ts"
+        "tilemap.g.ts"
     ],
     "testFiles": [
         "test.ts"

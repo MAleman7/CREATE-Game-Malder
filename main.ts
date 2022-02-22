@@ -346,24 +346,28 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.doorOpenSouth, function (
         tiles.loadMap(tiles.createMap(tilemap`level30`))
         // Credit for image inspiration to saphatthachat https://www.123rf.com/photo_59999783_pixel-art-boot.html
         speedBoots = sprites.create(img`
-            . . . . . f f f f f f . . . . . 
-            . . . . f f 6 6 4 4 f f . . . . 
-            . . . f f 4 d d d d 4 f f . . . 
-            . . f f 6 d d d d d d 6 f f . . 
-            . f f 4 5 d d d d d d 5 6 f f . 
-            f f 4 d d 5 d d d d 5 d d 4 f f 
-            f 4 d d d d 5 4 4 5 d d d d 4 f 
-            f 6 d d d d 4 5 5 4 d d d d 6 f 
-            f 6 d d d d 4 5 5 4 d d d d 6 f 
-            f 4 d d d d 5 4 4 5 d d d d 4 f 
-            f f 4 d d 5 d d d d 5 d d 4 f f 
-            . f f 6 5 d d d d d d 5 6 f f . 
-            . . f f 4 d d d d d d 6 f f . . 
-            . . . f f 6 d d d d 4 f f . . . 
-            . . . . f f 4 4 4 6 f f . . . . 
-            . . . . . f f f f f f . . . . . 
+            . . . . . . . 8 8 8 8 8 8 8 8 8 
+            . . . . . . . 8 8 8 8 8 8 8 8 8 
+            . . . . . . . . 8 8 8 8 8 8 8 8 
+            . . . . . . . . 8 8 8 8 8 8 8 8 
+            . . . . . . . . . 8 8 8 8 8 8 . 
+            . . . . . . . . . 8 8 8 8 8 8 . 
+            . . . . . . . . . 8 8 5 5 5 8 . 
+            . . . . . . . . . 9 9 5 9 5 9 . 
+            . . . . . . . . 8 8 8 5 5 5 8 8 
+            . 8 8 8 8 . . 8 8 8 8 8 8 8 8 8 
+            8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+            8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+            9 9 8 8 8 8 8 8 8 8 8 8 8 9 9 9 
+            9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+            . . 9 9 9 9 9 9 . . . 9 9 9 9 . 
+            . . . . . . . . . . . . . . . . 
             `, SpriteKind.Food)
         tiles.placeOnRandomTile(speedBoots, sprites.dungeon.floorLight1)
+        roomCompletion[1] = true
+    } else if (roomCompletion[1] == true) {
+        game.showLongText("You Have Already completed this room", DialogLayout.Bottom)
+        tiles.placeOnTile(explorer, tiles.getTileLocation(54, 54))
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.oneUp, function (sprite, otherSprite) {
@@ -373,8 +377,51 @@ function SpeedBoost () {
     controller.moveSprite(explorer, 150, 150)
     speedBoots.destroy(effects.fire, 500)
     pause(20000)
-    controller.moveSprite(explorer, 100, 100)
 }
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    tiles.loadMap(tiles.createMap(tilemap`level34`))
+    explorer.sayText("uh-oh", 500, false)
+    finalBoss = sprites.create(img`
+        ........................
+        ........................
+        ........................
+        ........................
+        ..........ffff..........
+        ........ff1111ff........
+        .......fb111111bf.......
+        .......f11111111f.......
+        ......fd11111111df......
+        ......fd11111111df......
+        ......fddd1111dddf......
+        ......fbdbfddfbdbf......
+        ......fcdcf11fcdcf......
+        .......fb111111bf.......
+        ......fffcdb1bdffff.....
+        ....fc111cbfbfc111cf....
+        ....f1b1b1ffff1b1b1f....
+        ....fbfbffffffbfbfbf....
+        .........ffffff.........
+        ...........fff..........
+        ........................
+        ........................
+        ........................
+        ........................
+        `, SpriteKind.Player)
+    while (roomCompletion[3] == false) {
+        finalBoss.follow(explorer, 100)
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.doorOpenEast, function (sprite, location) {
+    if (roomCompletion[0] == true && (roomCompletion[1] == true && roomCompletion[2] == true)) {
+    	
+    } else if (false) {
+    	
+    } else if (false) {
+    	
+    } else {
+    	
+    }
+})
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     explorer,
@@ -457,6 +504,31 @@ function invincibility () {
     pause(10000)
     explorer.setKind(SpriteKind.Player)
 }
+function Summon_Item (num: number, num2: number) {
+    _1Up = sprites.create(img`
+        ....................
+        ....................
+        ....................
+        ....................
+        ....................
+        ......cccc.cccc.....
+        .....cc44ccc44cc....
+        ....cc4444c4444cc...
+        ....cc444444444cc...
+        ....cc444444444cc...
+        .....cc4444444cc....
+        ......cc44444cc.....
+        .......cc444cc......
+        ........cc4cc.......
+        .........ccc........
+        ..........c.........
+        ....................
+        ....................
+        ....................
+        ....................
+        `, SpriteKind.oneUp)
+    _1Up.setPosition(122, 92)
+}
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     explorer,
@@ -532,6 +604,15 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     350,
     true
     )
+})
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.floorLight1, function (sprite, location) {
+    tiles.loadMap(tiles.createMap(tilemap`level1`))
+    tiles.placeOnTile(explorer, tiles.getTileLocation(54, 54))
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.invincibilityShield, function (sprite, otherSprite) {
+    tiles.loadMap(tiles.createMap(tilemap`level1`))
+    tiles.placeOnTile(explorer, tiles.getTileLocation(54, 2))
+    roomCompletion[2] = true
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.invincibilityShield, function (sprite2, otherSprite2) {
     invincibility()
@@ -783,6 +864,58 @@ scene.onOverlapTile(SpriteKind.Player, tiles.util.door0, function (sprite3, loca
         tiles.placeOnTile(explorer, tiles.getTileLocation(13, 37))
     }
 })
+scene.onOverlapTile(SpriteKind.Player, sprites.castle.tilePath8, function (sprite, location) {
+    if (roomCompletion[2] == false) {
+        tiles.loadMap(tiles.createMap(tilemap`level32`))
+        tiles.placeOnTile(explorer, tiles.getTileLocation(3, 31))
+        scene.cameraFollowSprite(explorer)
+        // Credit for Sprite Inspiration goes to https://clockworkraven.itch.io/rpg-icon-pack-160-fantasy-shields
+        shield = sprites.create(img`
+            . . . . . f f f f f f . . . . . 
+            . . . . f f 6 6 4 4 f f . . . . 
+            . . . f f 4 d d d d 4 f f . . . 
+            . . f f 6 d d d d d d 6 f f . . 
+            . f f 4 5 d d d d d d 5 6 f f . 
+            f f 4 d d 5 d d d d 5 d d 4 f f 
+            f 4 d d d d 5 4 4 5 d d d d 4 f 
+            f 6 d d d d 4 5 5 4 d d d d 6 f 
+            f 6 d d d d 4 5 5 4 d d d d 6 f 
+            f 4 d d d d 5 4 4 5 d d d d 4 f 
+            f f 4 d d 5 d d d d 5 d d 4 f f 
+            . f f 6 5 d d d d d d 5 6 f f . 
+            . . f f 4 d d d d d d 6 f f . . 
+            . . . f f 6 d d d d 4 f f . . . 
+            . . . . f f 4 4 4 6 f f . . . . 
+            . . . . . f f f f f f . . . . . 
+            `, SpriteKind.invincibilityShield)
+        shield.setPosition(76, 40)
+        for (let index = 0; index < 4; index++) {
+            snake = sprites.create(img`
+                . . . . c c c c c c . . . . . . 
+                . . . c 6 7 7 7 7 6 c . . . . . 
+                . . c 7 7 7 7 7 7 7 7 c . . . . 
+                . c 6 7 7 7 7 7 7 7 7 6 c . . . 
+                . c 7 c 6 6 6 6 c 7 7 7 c . . . 
+                . f 7 6 f 6 6 f 6 7 7 7 f . . . 
+                . f 7 7 7 7 7 7 7 7 7 7 f . . . 
+                . . f 7 7 7 7 6 c 7 7 6 f c . . 
+                . . . f c c c c 7 7 6 f 7 7 c . 
+                . . c 7 2 7 7 7 6 c f 7 7 7 7 c 
+                . c 7 7 2 7 7 c f c 6 7 7 6 c c 
+                c 1 1 1 1 7 6 f c c 6 6 6 c . . 
+                f 1 1 1 1 1 6 6 c 6 6 6 6 f . . 
+                f 6 1 1 1 1 1 6 6 6 6 6 c f . . 
+                . f 6 1 1 1 1 1 1 6 6 6 f . . . 
+                . . c c c c c c c c c f . . . . 
+                `, SpriteKind.Enemy)
+            tiles.placeOnRandomTile(snake, sprites.castle.tileGrass1)
+            snake.setVelocity(50, 0)
+            snake.setBounceOnWall(true)
+        }
+    } else if (roomCompletion[2] == true) {
+        game.showLongText("You Have Already completed this room", DialogLayout.Bottom)
+    }
+})
 function gainLife () {
     info.changeLifeBy(1)
     _1Up.destroy(effects.hearts, 500)
@@ -794,12 +927,20 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.trophy1, function (sprite, other
     otherSprite.destroy()
     trophy1count += 1
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprite.setKind(SpriteKind.invincibleState)
+    info.changeLifeBy(-1)
+    pause(200)
+    sprite.setKind(SpriteKind.Player)
+})
+let snake: Sprite = null
 let trophy: Sprite = null
+let _1Up: Sprite = null
+let shield: Sprite = null
+let finalBoss: Sprite = null
+let speedBoots: Sprite = null
 let boss1: Sprite = null
 let trophy1count = 0
-let speedBoots: Sprite = null
-let shield: Sprite = null
-let _1Up: Sprite = null
 let roomCompletion: boolean[] = []
 let explorer: Sprite = null
 let tilemap2: tiles.WorldMap = null
@@ -1055,55 +1196,11 @@ story.startCutscene(function () {
     )
     story.spriteMoveToLocation(explorer, 60, 40, 60)
 })
+controller.moveSprite(explorer, 100, 100)
 roomCompletion = [
-false,
 false,
 false,
 false,
 false
 ]
 info.setLife(3)
-_1Up = sprites.create(img`
-    ....................
-    ....................
-    ....................
-    ....................
-    ....................
-    ......cccc.cccc.....
-    .....cc44ccc44cc....
-    ....cc4444c4444cc...
-    ....cc444444444cc...
-    ....cc444444444cc...
-    .....cc4444444cc....
-    ......cc44444cc.....
-    .......cc444cc......
-    ........cc4cc.......
-    .........ccc........
-    ..........c.........
-    ....................
-    ....................
-    ....................
-    ....................
-    `, SpriteKind.oneUp)
-// Credit for Sprite Inspiration goes to https://clockworkraven.itch.io/rpg-icon-pack-160-fantasy-shields
-shield = sprites.create(img`
-    . . . . . f f f f f f . . . . . 
-    . . . . f f 6 6 4 4 f f . . . . 
-    . . . f f 4 d d d d 4 f f . . . 
-    . . f f 6 d d d d d d 6 f f . . 
-    . f f 4 5 d d d d d d 5 6 f f . 
-    f f 4 d d 5 d d d d 5 d d 4 f f 
-    f 4 d d d d 5 4 4 5 d d d d 4 f 
-    f 6 d d d d 4 5 5 4 d d d d 6 f 
-    f 6 d d d d 4 5 5 4 d d d d 6 f 
-    f 4 d d d d 5 4 4 5 d d d d 4 f 
-    f f 4 d d 5 d d d d 5 d d 4 f f 
-    . f f 6 5 d d d d d d 5 6 f f . 
-    . . f f 4 d d d d d d 6 f f . . 
-    . . . f f 6 d d d d 4 f f . . . 
-    . . . . f f 4 4 4 6 f f . . . . 
-    . . . . . f f f f f f . . . . . 
-    `, SpriteKind.invincibilityShield)
-speedBoots.setPosition(51, 41)
-_1Up.setPosition(122, 92)
-shield.setPosition(126, 35)

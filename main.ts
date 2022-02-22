@@ -794,7 +794,7 @@ scene.setBackgroundImage(img`
     `)
 let tilemap1 = tiles.createMap(tilemap`level1`)
 tiles.connectMapById(tilemap1, tilemap2, ConnectionKind.Door1)
-tilemap2 = 0
+tilemap2 = tiles.createMap(tilemap`level2`)
 tiles.loadMap(tilemap1)
 explorer = sprites.create(img`
     . . . . . . f f f f . . . . . . 

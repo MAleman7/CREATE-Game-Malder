@@ -1,5 +1,5 @@
 {
-    "name": "create-game-malder",
+    "name": "final-create-game-malder",
     "version": "0.0.0",
     "description": "",
     "dependencies": {
@@ -27,7 +27,7 @@
     ],
     "public": true,
     "targetVersions": {
-        "target": "1.8.20",
+        "target": "1.8.22",
         "targetId": "arcade"
     },
     "supportedTargets": [
